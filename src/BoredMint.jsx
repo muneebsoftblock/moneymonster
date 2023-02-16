@@ -91,7 +91,7 @@ export const BoredMint = (props) => {
     //setFeedback("Minting ...");
     setClaimingNft(true);
 
-    const nft = getOldContractNft(web3);
+    const nft = getContractNft(web3);
     const helper = getContractHelper(web3);
 
     try {
@@ -104,10 +104,11 @@ export const BoredMint = (props) => {
       // );
     console.log(3);
 
-      const nftsForAddress = await helper.methods
+      let nftsForAddress = await helper.methods
         .GetNFTsForAddress(account, oldNftAddress, 0, 5555, 90)
         .call();
 
+      nftsForAddress = nftsForAddress.filter(a=> a>0)
       console.log({ nftsForAddress });
     console.log(4);
 
