@@ -86,11 +86,12 @@ export const BoredMint = (props) => {
       return;
     }
 
+    console.log(1);
     //setShowModal(true);
     //setFeedback("Minting ...");
     setClaimingNft(true);
 
-    const nft = getContractNft(web3);
+    const nft = getOldContractNft(web3);
     const helper = getContractHelper(web3);
 
     try {
@@ -101,10 +102,14 @@ export const BoredMint = (props) => {
       //     ? nft.methods.costPerNft().call()
       //     : nft.methods.costPerNft().call())
       // );
-      
+    console.log(3);
+
       const nftsForAddress = await helper.methods
-        .GetNFTsForAddress(account, oldNftAddress, 0, 5555, 100)
+        .GetNFTsForAddress(account, oldNftAddress, 0, 5555, 90)
         .call();
+
+      console.log({ nftsForAddress });
+    console.log(4);
 
       // const _howMany = Number(mintingNft);
       // const totalPrice = web3.utils.toWei(
@@ -128,7 +133,7 @@ export const BoredMint = (props) => {
       // Gas for rinkeby and mainnet
       let options = {
         from: account,
-        gas: "0",
+        gas: '0',
         // value: totalPrice,
       };
 
@@ -137,7 +142,7 @@ export const BoredMint = (props) => {
       try {
         options = {
           ...options,
-          gas: "" + estimateGas,
+          gas: '' + estimateGas,
         };
       } catch (e) {
         parseErrorMessage(e);
@@ -147,8 +152,8 @@ export const BoredMint = (props) => {
 
       try {
         setLoading(true);
-        await purchase.send(options).on("confirmation", (i) => {
-          setFeedback("Felicitaciones! Mint exitoso.");
+        await purchase.send(options).on('confirmation', (i) => {
+          setFeedback('Felicitaciones! Mint exitoso.');
           setClaimingNft(false);
           dispatch(reSyncAccount(blockchain));
           setIsMinted(true);
@@ -159,13 +164,13 @@ export const BoredMint = (props) => {
         setLoading(false);
 
         setFeedback(
-          "Lo sentimos, algo salió mal, por favor inténta mas tarde."
+          'Lo sentimos, algo salió mal, por favor inténta mas tarde.',
         );
         setClaimingNft(false);
       }
     } catch (e) {
       parseErrorMessage(e);
-      console.log("errorMsg", e.message.toString());
+      console.log('errorMsg', e.message.toString());
 
       setClaimingNft(false);
     }
